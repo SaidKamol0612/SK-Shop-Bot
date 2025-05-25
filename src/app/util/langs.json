@@ -1,0 +1,51 @@
+{
+    "request_phone": {
+        "uz": "Iltimos botimizdan foydanilishdan oldin botga telefon raqmingizni jo'nating.",
+        "ru": "Пожалуйста перед использованием нашего бота отправьте ваш номер телефона.",
+        "en": "Please send your phone number before using our bot."
+    },
+    "send_number": {
+        "uz" : "☎️ Telefon raqamini jo'natish",
+        "ru" : "☎️ Отправить номер телефона",
+        "en" : "☎️ Send phone number"
+    },
+    "accept_phone" : {
+        "uz" : "✅ Telefon raqamingizni qabul qildim.",
+        "ru" : "✅ Принял ваш номер телефона.",
+        "en" : "✅ Accept your phone number."
+    },
+    "welcome_menu" : {
+        "uz" : "Xush kelibsiz!\nBosh menu:",
+        "ru" : "Добро пожаловать!\nГлавный меню:",
+        "en" : "Welcome!\nMain menu:"
+    },
+    "menu" : {
+        "uz" : [
+            "🔍 Kod yordamida qidirish",
+            "🧾 Katalog",
+            "🛒 Savat",
+            "❤️ Sevimlilar",
+            "🗂 Ma'lumotlarim",
+            "📦 Mening buyurtmalarim",
+            "🌐 Tilni o'zgartirish"
+        ],
+        "ru" : [
+            "🔍 Искать с помощью кода",
+            "🧾 Каталог",
+            "🛒 Корзина",
+            "❤️ Любимые",
+            "🗂 Мои информации",
+            "📦 Мои заказы",
+            "🌐 Сменить язык"
+        ],
+        "en" : [
+            "🔍 Search by code",
+            "🧾 Catalog",
+            "🛒 Cart",
+            "❤️ Favorit",
+            "🗂 My info",
+            "📦 My orders",
+            "🌐 Change language"
+        ]
+    }
+}
