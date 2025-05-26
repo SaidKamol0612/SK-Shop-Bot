@@ -62,7 +62,7 @@
         "ru": "⚠️ У нас нету такого продукта."
     },
     "product_details": {
-        "uz": "📦 Mahsulot nomi: name. \n🏷 Mahsulot haqida: description. \n🏷️ Mahsulot narxi: price. \n\n🛒 Savatchangizda: count ta.",
+        "uz": "📦 Mahsulot nomi: name. \n🏷 Mahsulot haqida: description. \n🏷️ Mahsulot narxi: price. \n\n🛒 Savatchangizda: count dona.",
         "ru": "📦 Название продукта: name. \n🏷 Описание продукта: description. \n🏷️ Цена продукта: price. \n\n🛒 В вашей корзине: count штук."
     },
     "back_to_categories": {
@@ -76,14 +76,20 @@
     "product_menu": {
         "uz": [
             "❤️/💔",
-            "🛒 Savatga qo'shish",
-            "📦 Buyurtma berish"
+            "📦 Buyurtma berish",
+            "➖ Savatga olib tashlash",
+            "🛒 Savatga qo'shish"
         ],
         "ru": [
             "❤️/💔",
-            "🛒 Добавить в корзину.",
-            "📦 Заказать."
+            "📦 Заказать.",
+            "➖ Убрать с корзины.",
+            "🛒 Добавить в корзину."
         ]
+    },
+    "product_removed_from_cart": {
+        "uz": "➖ Mahsulot savatchadan olib tashlandi.",
+        "ru": "➖ Продукт убран с корзины."
     },
     "product_added_to_cart": {
         "uz": "✅ Mahsulot savatchaga qo'shildi.",
@@ -98,5 +104,17 @@
             "❤️ Добавлен в любимые",
             "💔 Удален из любимых."
         ]
+    },
+    "pcs": {
+        "uz": "dona.",
+        "ru": "штук."
+    },
+    "no_favorites" : {
+        "uz": "💔 Sizda sevimli mahsulotlar yo'q.",
+        "ru": "💔 У вас нету любимых продуктов."
+    },
+    "no_cart_products" : {
+        "uz": "🛒 Siznig savatchada mahsulotlar yo'q.",
+        "ru": "🛒 В вашем корзине нету продуктов."
     }
 }

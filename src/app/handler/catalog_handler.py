@@ -10,10 +10,13 @@ from app.util.i18n import get_i18n_msg
 from app.util.crud import get_categories_by_products
 from app.state.app import AppState
 from app.db.crud import (
+    remove_product_from_cart,
     add_product_to_cart,
     get_count_products_in_cart,
     like_unlike_product,
+    is_liked,
 )
+from app.db import db_helper
 
 router = Router()
 
@@ -61,7 +64,7 @@ async def choose_category(message: Message, state: FSMContext):
 
 
 @router.message(AppState.choose_product, F.text)
-async def choose_category(message: Message, state: FSMContext):
+async def choose_product(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
     products = await get_products_from_api(lang)
@@ -70,15 +73,23 @@ async def choose_category(message: Message, state: FSMContext):
     )
 
     if product:
-        product_count = await get_count_products_in_cart(
-            message.from_user.id, product["id"]
-        )
+        async with db_helper.session_factory() as session:
+            liked_unliked = (
+                "❤️\n\n"
+                if await is_liked(session, message.from_user.id, product["id"])
+                else ""
+            )
+
+            product_count = await get_count_products_in_cart(
+                session, message.from_user.id, product["id"]
+            )
 
         await message.answer_photo(
             photo=URLInputFile(
                 url=product["images"][0]["filePath"], filename="product_image.jpg"
             ),
-            caption=get_i18n_msg("product_details", lang)
+            caption=liked_unliked
+            + get_i18n_msg("product_details", lang)
             .replace("name", product["name"])
             .replace("price", str(product["price"]))
             .replace("description", product["shortDescription"])
@@ -89,42 +100,68 @@ async def choose_category(message: Message, state: FSMContext):
         await message.answer(get_i18n_msg("product_not_found", lang))
 
 
-@router.callback_query(F.data.startswith("add_to_cart"))
+@router.callback_query(AppState.choose_product, F.data.startswith("minus_cart"))
+async def minus_cart(callback: CallbackQuery, state: FSMContext):
+    lang = (await state.get_data()).get("lang")
+
+    product_id = int(callback.data.split(":")[1])
+    user_tg_id = callback.from_user.id
+
+    async with db_helper.session_factory() as session:
+        product_count = await get_count_products_in_cart(session, user_tg_id, product_id)
+
+    if product_count > 0:
+        await remove_product_from_cart(session, user_tg_id, product_id)
+        product_count -= 1
+
+        products = await get_products_from_api(lang)
+        product = next((p for p in products if p["id"] == product_id), None)
+
+        pcs = get_i18n_msg("pcs", lang)
+        await callback.answer(
+            get_i18n_msg("product_removed_from_cart", lang), show_alert=True
+        )
+        await callback.message.edit_caption(
+            caption=callback.message.caption.replace(
+                f"{product_count + 1} {pcs}", f"{product_count} {pcs}"
+            ),
+            reply_markup=product_kb(product["id"], lang),
+        )
+
+
+@router.callback_query(AppState.choose_product, F.data.startswith("add_to_cart"))
 async def add_to_cart(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
     product_id = int(callback.data.split(":")[1])
-    await add_product_to_cart(callback.from_user.id, product_id)
-
+    
+    async with db_helper.session_factory() as session:
+        await add_product_to_cart(session, callback.from_user.id, product_id)
+        product_count = await get_count_products_in_cart(session, callback.from_user.id, product_id)
+    
     products = await get_products_from_api(lang)
     product = next((p for p in products if p["id"] == product_id), None)
 
-    product_count = await get_count_products_in_cart(callback.from_user.id, product_id)
-
-    liked_unliked = (
-        "❤️\n\n" if await like_unlike(callback.from_user.id, product_id) else ""
-    )
 
     await callback.answer(get_i18n_msg("product_added_to_cart", lang), show_alert=True)
+    pcs = get_i18n_msg("pcs", lang)
     await callback.message.edit_caption(
-        caption=liked_unliked
-        + get_i18n_msg("product_details", lang)
-        .replace("name", product["name"])
-        .replace("price", str(product["price"]))
-        .replace("description", product["shortDescription"])
-        .replace("count", f"{product_count}"),
+        caption=callback.message.caption.replace(
+            f"{product_count - 1} {pcs}", f"{product_count} {pcs}"
+        ),
         reply_markup=product_kb(product["id"], lang),
     )
 
 
-@router.callback_query(F.data.startswith("like_unlike"))
+@router.callback_query(AppState.choose_product, F.data.startswith("like_unlike"))
 async def like_unlike(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
     product_id = int(callback.data.split(":")[1])
     user_tg_id = callback.from_user.id
 
-    like = await like_unlike_product(user_tg_id, product_id)
+    async with db_helper.session_factory() as session:
+        like = await like_unlike_product(session, user_tg_id, product_id)
 
     if like:
         await callback.answer(get_i18n_msg("liked_unliked", lang)[0], show_alert=True)
@@ -138,7 +175,3 @@ async def like_unlike(callback: CallbackQuery, state: FSMContext):
             caption=callback.message.caption.replace("❤️\n\n", ""),
             reply_markup=product_kb(product_id, lang),
         )
-
-
-@router.message(F.text.in_(("❤️ Sevimlilar", "❤️ Любимые", "❤️ Favorites")))
-async def favorites(message: Message, state: FSMContext): ...

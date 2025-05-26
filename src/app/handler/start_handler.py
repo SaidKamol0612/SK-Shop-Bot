@@ -4,6 +4,7 @@ from aiogram.fsm.context import FSMContext
 
 from app.state.app import AppState
 from app.db.crud import is_registered_user
+from app.db import db_helper
 from app.util.i18n import get_i18n_msg
 from app.keyboard.reply import send_phone_kb, menu_kb
 
@@ -25,7 +26,10 @@ async def uzbek_language_handler(message: Message, state: FSMContext):
         )
         return
 
-    if await is_registered_user(message.from_user.id):
+    async with db_helper.session_factory() as session:
+        is_user = await is_registered_user(session, message.from_user.id)
+
+    if is_user:
         lang = (await state.get_data()).get("lang")
         w = get_i18n_msg("welcome_menu", lang)
         await state.set_state(AppState.main)

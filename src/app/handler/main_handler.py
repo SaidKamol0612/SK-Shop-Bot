@@ -6,6 +6,7 @@ from app.state.app import AppState
 from app.util.i18n import get_i18n_msg
 from app.keyboard.reply import menu_kb, LANG_KB
 from app.db.crud import set_user
+from app.db import db_helper
 
 router = Router()
 
@@ -14,11 +15,13 @@ router = Router()
 async def main_menu(message: Message, state: FSMContext):
     user_phone_num = message.contact.phone_number
 
-    await set_user(
-        tg_id=message.from_user.id,
-        name=message.from_user.first_name,
-        phone_num=user_phone_num,
-    )
+    async with db_helper.session_factory() as session:
+        await set_user(
+            session,
+            tg_id=message.from_user.id,
+            name=message.from_user.first_name,
+            phone_num=user_phone_num,
+        )
 
     lang = (await state.get_data()).get("lang")
 

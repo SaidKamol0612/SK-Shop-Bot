@@ -13,10 +13,13 @@ def product_kb(product_id: int, lang: str) -> InlineKeyboardMarkup:
             text=product_menu[0], callback_data=f"like_unlike:{product_id}"
         ),
         InlineKeyboardButton(
-            text=product_menu[1], callback_data=f"add_to_cart:{product_id}"
+            text=product_menu[1], callback_data=f"buy_now:{product_id}"
         ),
         InlineKeyboardButton(
-            text=product_menu[2], callback_data=f"buy_now:{product_id}"
+            text=product_menu[2], callback_data=f"minus_cart:{product_id}"
+        ),
+        InlineKeyboardButton(
+            text=product_menu[3], callback_data=f"add_to_cart:{product_id}"
         ),
     )
 
