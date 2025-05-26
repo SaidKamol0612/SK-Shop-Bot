@@ -31,11 +31,10 @@ async def main_menu(message: Message, state: FSMContext):
 
 
 @router.message(
-    F.text.in_(("🌐 Tilni o'zgartirish", "🌐 Сменить язык", "🌐 Change language"))
+    F.text.in_(("🌐 Tilni o'zgartirish", "🌐 Сменить язык"))
 )
 async def change_lang(message: Message, state: FSMContext):
     msg = (
-        "Please, choose language.\n"
         "Пожалуйста, выберите язык.\n"
         "Iltimos, tilni tanlang.\n"
     )

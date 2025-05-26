@@ -1,30 +1,26 @@
 import httpx
-from typing import Optional
 
+from app.core.config import settings
 
-async def get_api_response(url: str, params: Optional[dict] = None) -> dict:
-    """
-    Make a GET request to the specified URL with optional parameters.
+async def login() -> str:
+    url = settings.api.login_endpoint
+    data = {"login": settings.api.login, "password": settings.api.password}
 
-    Args:
-        url (str): The URL to send the request to.
-        params (dict, optional): A dictionary of query parameters to include in the request.
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=data)
+        response.raise_for_status()
+        token_data = response.json()
+        return token_data["access_token"]
 
-    Returns:
-        dict: The JSON response from the API.
+async def get_products_from_api(lang: int) -> dict:
+    langs = {1: "uz", 2: "ru"}
+    url = settings.api.products_endpoint
 
-    Raises:
-        httpx.HTTPStatusError: For non-2xx HTTP responses.
-        httpx.RequestError: For network-related errors.
-    """
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, params=params)
-            response.raise_for_status()
-            return response.json()
-    except httpx.RequestError as exc:
-        print(f"An error occurred while requesting {exc.request.url!r}: {exc}")
-        raise
-    except httpx.HTTPStatusError as exc:
-        print(f"Error response {exc.response.status_code} while requesting {exc.request.url!r}")
-        raise
+    bearer_token = await login()
+    headers = {"Authorization": f"Bearer {bearer_token}"}
+    params = {"languageId": langs.get(lang)}
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        return response.json()

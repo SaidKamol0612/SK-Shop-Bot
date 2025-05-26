@@ -36,8 +36,6 @@ async def cmd_start(message: Message, state: FSMContext):
         "Iltimos, tilni tanlang.\n\n"
         f"Привет, <b>{user.first_name}</b>!\n"
         "Пожалуйста, выберите язык.\n\n"
-        f"Hello, <b>{user.first_name}</b>!\n"
-        "Please, choose language.\n\n"
     )
 
     await state.set_state(AppState.choose_lang)

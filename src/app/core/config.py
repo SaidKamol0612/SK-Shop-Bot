@@ -34,16 +34,12 @@ class LoggingConfig(BaseModel):
 
 class ApiSettings(BaseModel):
     base_url: str
-    key: str
+    
+    login: str
+    password: str
 
-    # Endpoints
-    @property
-    def users_endpoint(self) -> str:
-        return self.get_full_url("users/")
-
-    @property
-    def products_endpoint(self) -> str:
-        return self.get_full_url("products/")
+    products_endpoint: str
+    login_endpoint: str
 
     timeout: int = 30  # seconds
 

@@ -20,11 +20,10 @@ async def uzbek_language_handler(message: Message, state: FSMContext):
     elif msg == ("🇷🇺 Русский"):
         await state.update_data(lang="ru")
         await message.answer("🇷🇺 Вы выбрали русский язык.")
-    elif msg == ("🇺🇸 English"):
-        await state.update_data(lang="en")
-        await message.answer("🇺🇸 You have selected English.")
     else:
-        await message.answer("⚠️ Please choose correct language.")
+        await message.answer(
+            "⚠️ Iltimos to'gri tilni tanlang.\n⚠️ Пожалуйста выберите правильный язык."
+        )
         return
 
     if await is_registered_user(message.from_user.id):

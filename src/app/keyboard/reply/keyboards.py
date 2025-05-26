@@ -11,7 +11,6 @@ LANG_KB = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="🇺🇿 O'zbekcha"),
             KeyboardButton(text="🇷🇺 Русский"),
-            KeyboardButton(text="🇺🇸 English"),
         ]
     ],
     resize_keyboard=True,
