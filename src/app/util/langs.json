@@ -50,19 +50,27 @@
         "ru": "Наши категории."
     },
     "category_not_found": {
-        "uz": "Bunday kategoriyamiz yo'q.",
-        "ru": "У нас нету такой категории."
+        "uz": "⚠️ Bunday kategoriyamiz yo'q.",
+        "ru": "⚠️ У нас нету такой категории."
     },
     "category_products": {
         "uz": "Shu kategoriyadagi mahsulotlarimiz.",
         "ru": "Наши продукты в этой категории."
     },
     "product_not_found": {
-        "uz": "Bunday mahsulotimiz yo'q.",
-        "ru": "У нас нету такого продукта."
+        "uz": "⚠️ Bunday mahsulotimiz yo'q.",
+        "ru": "⚠️ У нас нету такого продукта."
     },
     "product_details": {
         "uz": "Mahsulot nomi: name. \nMahsulot haqida: description. \nMahsulot narxi: price.",
         "ru": "Название продукта: name. \nОписание продукта: description. \nЦена продукта: price."
+    },
+    "back_to_categories": {
+        "uz": "🔙 Kategoriyalarga qaytish.",
+        "ru": "🔙 Вернуться к категориям."
+    },
+    "back_to_menu": {
+        "uz": "🏠 Bosh menyuga qaytish.",
+        "ru": "🏠 Вернуться в главоному меню."
     }
 }

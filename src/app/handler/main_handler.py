@@ -28,15 +28,19 @@ async def main_menu(message: Message, state: FSMContext):
     await state.set_state(AppState.main)
     await message.answer(f"{accept}\n{w}", reply_markup=menu_kb(lang))
 
+@router.message(F.text.in_(("🏠 Bosh menyuga qaytish.", "🏠 Вернуться в главоному меню.")))
+async def back_to_main_menu(message: Message, state: FSMContext):
+    lang = (await state.get_data()).get("lang")
 
-@router.message(
-    F.text.in_(("🌐 Tilni o'zgartirish", "🌐 Сменить язык"))
-)
-async def change_lang(message: Message, state: FSMContext):
-    msg = (
-        "Пожалуйста, выберите язык.\n"
-        "Iltimos, tilni tanlang.\n"
+    await state.set_state(AppState.main)
+    await message.answer(
+        get_i18n_msg("welcome_menu", lang),
+        reply_markup=menu_kb(lang),
     )
+
+@router.message(F.text.in_(("🌐 Tilni o'zgartirish", "🌐 Сменить язык")))
+async def change_lang(message: Message, state: FSMContext):
+    msg = "Пожалуйста, выберите язык.\n" "Iltimos, tilni tanlang.\n"
 
     await state.set_state(AppState.choose_lang)
     await message.answer(

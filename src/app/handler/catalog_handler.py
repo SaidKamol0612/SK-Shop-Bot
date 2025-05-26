@@ -12,15 +12,11 @@ from app.state.app import AppState
 router = Router()
 
 
-@router.message(
-    F.text.in_(
-        ("🔍 Kod yordamida qidirish", "🔍 Искать с помощью кода", "🔍 Search by code")
-    )
-)
+@router.message(F.text.in_(("🔍 Kod yordamida qidirish", "🔍 Искать с помощью кода")))
 async def search_by_code(message: Message, state: FSMContext): ...
 
 
-@router.message(F.text.in_(("🧾 Katalog", "🧾 Каталог", "🛒 Корзина")))
+@router.message(F.text.in_(("🧾 Katalog", "🧾 Каталог")) | F.text.in_(("🔙 Kategoriyalarga qaytish.", "🔙 Вернуться к категориям.")))
 async def catalog(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
@@ -30,7 +26,7 @@ async def catalog(message: Message, state: FSMContext):
     await state.set_state(AppState.choose_category)
     await message.answer(
         get_i18n_msg("categories", lang),
-        reply_markup=catalog_kb(categories, is_ctg=True),
+        reply_markup=catalog_kb(categories, is_ctg=True, lang=lang),
     )
 
 
@@ -49,7 +45,7 @@ async def choose_category(message: Message, state: FSMContext):
             await state.set_state(AppState.choose_product)
             await message.answer(
                 get_i18n_msg("category_products", lang),
-                reply_markup=catalog_kb(category_products),
+                reply_markup=catalog_kb(category_products, lang=lang),
             )
     else:
         await message.answer(get_i18n_msg("category_not_found", lang))
