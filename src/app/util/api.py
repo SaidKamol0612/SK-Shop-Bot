@@ -10,10 +10,10 @@ async def login() -> str:
         response = await client.post(url, json=data)
         response.raise_for_status()
         token_data = response.json()
-        return token_data["access_token"]
+        return token_data["token"]
 
 async def get_products_from_api(lang: int) -> dict:
-    langs = {1: "uz", 2: "ru"}
+    langs = {"uz": 1, "ru": 2}
     url = settings.api.products_endpoint
 
     bearer_token = await login()

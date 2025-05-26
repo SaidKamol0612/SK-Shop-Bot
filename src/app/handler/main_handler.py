@@ -2,7 +2,6 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
-from app.state.registraion import RegistrationStates
 from app.state.app import AppState
 from app.util.i18n import get_i18n_msg
 from app.keyboard.reply import menu_kb, LANG_KB
@@ -11,7 +10,7 @@ from app.db.crud import set_user
 router = Router()
 
 
-@router.message(RegistrationStates.waiting_for_phone_number, F.contact)
+@router.message(AppState.waiting_for_phone_number, F.contact)
 async def main_menu(message: Message, state: FSMContext):
     user_phone_num = message.contact.phone_number
 

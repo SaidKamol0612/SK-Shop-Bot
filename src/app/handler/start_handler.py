@@ -3,7 +3,6 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from app.state.app import AppState
-from app.state.registraion import RegistrationStates
 from app.db.crud import is_registered_user
 from app.util.i18n import get_i18n_msg
 from app.keyboard.reply import send_phone_kb, menu_kb
@@ -33,7 +32,7 @@ async def uzbek_language_handler(message: Message, state: FSMContext):
         await message.answer(w, reply_markup=menu_kb(lang))
     else:
         lang = (await state.get_data()).get("lang")
-        await state.set_state(RegistrationStates.waiting_for_phone_number)
+        await state.set_state(AppState.waiting_for_phone_number)
         await message.answer(
             get_i18n_msg("request_phone", lang), reply_markup=send_phone_kb(lang)
         )

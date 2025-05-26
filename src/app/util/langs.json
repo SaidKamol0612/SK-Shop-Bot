@@ -4,19 +4,19 @@
         "ru": "Пожалуйста перед использованием нашего бота отправьте ваш номер телефона."
     },
     "send_number": {
-        "uz" : "☎️ Telefon raqamini jo'natish",
-        "ru" : "☎️ Отправить номер телефона"
+        "uz": "☎️ Telefon raqamini jo'natish",
+        "ru": "☎️ Отправить номер телефона"
     },
-    "accept_phone" : {
-        "uz" : "✅ Telefon raqamingizni qabul qildim.",
-        "ru" : "✅ Принял ваш номер телефона."
+    "accept_phone": {
+        "uz": "✅ Telefon raqamingizni qabul qildim.",
+        "ru": "✅ Принял ваш номер телефона."
     },
-    "welcome_menu" : {
-        "uz" : "Xush kelibsiz!\nBosh menu.",
-        "ru" : "Добро пожаловать!\nГлавный меню."
+    "welcome_menu": {
+        "uz": "Xush kelibsiz!\nBosh menu.",
+        "ru": "Добро пожаловать!\nГлавный меню."
     },
-    "menu" : {
-        "uz" : [
+    "menu": {
+        "uz": [
             "🔍 Kod yordamida qidirish",
             "🧾 Katalog",
             "🛒 Savat",
@@ -25,7 +25,7 @@
             "📦 Mening buyurtmalarim",
             "🌐 Tilni o'zgartirish"
         ],
-        "ru" : [
+        "ru": [
             "🔍 Искать с помощью кода",
             "🧾 Каталог",
             "🛒 Корзина",
@@ -35,14 +35,34 @@
             "🌐 Сменить язык"
         ]
     },
-    "user_info" : {
-        "uz" : [
+    "user_info": {
+        "uz": [
             "Ismingiz",
             "Telefon raqamingiz"
         ],
-        "ru" : [
+        "ru": [
             "Ваше имя",
             "Ваш номер телефона"
         ]
+    },
+    "categories": {
+        "uz": "Kategoriyalarimiz.",
+        "ru": "Наши категории."
+    },
+    "category_not_found": {
+        "uz": "Bunday kategoriyamiz yo'q.",
+        "ru": "У нас нету такой категории."
+    },
+    "category_products": {
+        "uz": "Shu kategoriyadagi mahsulotlarimiz.",
+        "ru": "Наши продукты в этой категории."
+    },
+    "product_not_found": {
+        "uz": "Bunday mahsulotimiz yo'q.",
+        "ru": "У нас нету такого продукта."
+    },
+    "product_details": {
+        "uz": "Mahsulot nomi: name. \nMahsulot haqida: description. \nMahsulot narxi: price.",
+        "ru": "Название продукта: name. \nОписание продукта: description. \nЦена продукта: price."
     }
 }

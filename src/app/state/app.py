@@ -1,7 +1,9 @@
 from aiogram.fsm.state import StatesGroup, State
 
-from .registraion import RegistrationStates
-
 class AppState(StatesGroup):
     choose_lang = State()
+    waiting_for_phone_number = State()
     main = State()
+    choose_category = State()
+    choose_product = State()
+    product_details = State()

@@ -36,3 +36,14 @@ def menu_kb(lang: str) -> ReplyKeyboardMarkup:
         kb.add(KeyboardButton(text=option))
 
     return kb.adjust(2).as_markup(resize_keyboard=True)
+
+def catalog_kb(list_e: list[str], is_ctg: bool | None = False) -> ReplyKeyboardMarkup:
+    kb = ReplyKeyboardBuilder()
+
+    for e in list_e:
+        if is_ctg:
+            kb.add(KeyboardButton(text=e['name']))
+        else:
+            kb.add(KeyboardButton(text=f"{e['name']} {e['id']}"))
+
+    return kb.adjust(2).as_markup(resize_keyboard=True)
