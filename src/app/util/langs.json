@@ -12,8 +12,8 @@
         "ru": "✅ Принял ваш номер телефона."
     },
     "welcome_menu": {
-        "uz": "Xush kelibsiz!\nBosh menu.",
-        "ru": "Добро пожаловать!\nГлавный меню."
+        "uz": "👋 Xush kelibsiz!\n🏠 Bosh menu.",
+        "ru": "👋 Добро пожаловать!\n🏠 Главный меню."
     },
     "menu": {
         "uz": [
@@ -37,33 +37,33 @@
     },
     "user_info": {
         "uz": [
-            "Ismingiz",
-            "Telefon raqamingiz"
+            "🪪 Ismingiz",
+            "☎️ Telefon raqamingiz"
         ],
         "ru": [
-            "Ваше имя",
-            "Ваш номер телефона"
+            "🪪 Ваше имя",
+            "☎️ Ваш номер телефона"
         ]
     },
     "categories": {
-        "uz": "Kategoriyalarimiz.",
-        "ru": "Наши категории."
+        "uz": "🔍 Kategoriyalarimiz.",
+        "ru": "🔍 Наши категории."
     },
     "category_not_found": {
         "uz": "⚠️ Bunday kategoriyamiz yo'q.",
         "ru": "⚠️ У нас нету такой категории."
     },
     "category_products": {
-        "uz": "Shu kategoriyadagi mahsulotlarimiz.",
-        "ru": "Наши продукты в этой категории."
+        "uz": "🔍 Shu kategoriyadagi mahsulotlarimiz.",
+        "ru": "🔍 Наши продукты в этой категории."
     },
     "product_not_found": {
         "uz": "⚠️ Bunday mahsulotimiz yo'q.",
         "ru": "⚠️ У нас нету такого продукта."
     },
     "product_details": {
-        "uz": "Mahsulot nomi: name. \nMahsulot haqida: description. \nMahsulot narxi: price.",
-        "ru": "Название продукта: name. \nОписание продукта: description. \nЦена продукта: price."
+        "uz": "📦 Mahsulot nomi: name. \n🏷 Mahsulot haqida: description. \n🏷️ Mahsulot narxi: price. \n\n🛒 Savatchangizda: count ta.",
+        "ru": "📦 Название продукта: name. \n🏷 Описание продукта: description. \n🏷️ Цена продукта: price. \n\n🛒 В вашей корзине: count штук."
     },
     "back_to_categories": {
         "uz": "🔙 Kategoriyalarga qaytish.",
@@ -72,5 +72,31 @@
     "back_to_menu": {
         "uz": "🏠 Bosh menyuga qaytish.",
         "ru": "🏠 Вернуться в главоному меню."
+    },
+    "product_menu": {
+        "uz": [
+            "❤️/💔",
+            "🛒 Savatga qo'shish",
+            "📦 Buyurtma berish"
+        ],
+        "ru": [
+            "❤️/💔",
+            "🛒 Добавить в корзину.",
+            "📦 Заказать."
+        ]
+    },
+    "product_added_to_cart": {
+        "uz": "✅ Mahsulot savatchaga qo'shildi.",
+        "ru": "✅ Продукт добавлен в корзину."
+    },
+    "liked_unliked": {
+        "uz": [
+            "❤️ Sevimlilarga qo'shildi.",
+            "💔 Sevimlilardan olib tashlandi."
+        ],
+        "ru": [
+            "❤️ Добавлен в любимые",
+            "💔 Удален из любимых."
+        ]
     }
 }

@@ -13,12 +13,12 @@ class Favorite(Base):
     user_id = mapped_column(ForeignKey(User.id))
     product_id: Mapped[int]
     
-class Basket(Base):
+class Cart(Base):
     user_id = mapped_column(ForeignKey(User.id))
     is_ordered: Mapped[bool]
     
-class ProductBasket(Base):
-    basket_id = mapped_column(ForeignKey(Basket.id))
+class ProductCart(Base):
+    cart_id = mapped_column(ForeignKey(Cart.id))
     product_id: Mapped[int]
     product_count: Mapped[int]
     
