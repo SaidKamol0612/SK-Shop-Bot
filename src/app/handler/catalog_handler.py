@@ -17,6 +17,7 @@ from app.db.crud import (
     is_liked,
 )
 from app.db import db_helper
+from app.util.temp_msg import add_temp_msg, clear_temp_msgs
 
 router = Router()
 
@@ -50,7 +51,7 @@ async def search_by_code_handler(message: Message, state: FSMContext):
                 session, message.from_user.id, product["id"]
             )
 
-        await message.answer_photo(
+        msg = await message.answer_photo(
             photo=URLInputFile(
                 url=product["images"][0]["filePath"], filename="product_image.jpg"
             ),
@@ -62,6 +63,7 @@ async def search_by_code_handler(message: Message, state: FSMContext):
             .replace("count", f"{product_count}"),
             reply_markup=product_kb(product["id"], lang),
         )
+        add_temp_msg(message.from_user.id, msg.message_id)
     else:
         await message.answer(get_i18n_msg("product_not_found", lang))
 
@@ -71,6 +73,9 @@ async def search_by_code_handler(message: Message, state: FSMContext):
     | F.text.in_(("🔙 Kategoriyalarga qaytish.", "🔙 Вернуться к категориям."))
 )
 async def catalog(message: Message, state: FSMContext):
+    await clear_temp_msgs(message.from_user.id)
+    await message.delete()
+    
     lang = (await state.get_data()).get("lang")
 
     products = await get_products_from_api(lang)
@@ -125,7 +130,7 @@ async def choose_product(message: Message, state: FSMContext):
                 session, message.from_user.id, product["id"]
             )
 
-        await message.answer_photo(
+        msg = await message.answer_photo(
             photo=URLInputFile(
                 url=product["images"][0]["filePath"], filename="product_image.jpg"
             ),
@@ -137,6 +142,7 @@ async def choose_product(message: Message, state: FSMContext):
             .replace("count", f"{product_count}"),
             reply_markup=product_kb(product["id"], lang),
         )
+        add_temp_msg(message.from_user.id, msg.message_id)
     else:
         await message.answer(get_i18n_msg("product_not_found", lang))
 

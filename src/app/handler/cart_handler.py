@@ -9,6 +9,7 @@ from app.db.crud import (
 from app.db.crud import (
     get_products_in_cart,
     remove_product_from_cart,
+    add_product_to_cart,
     activate_order,
     activate_one_order,
 )
@@ -18,6 +19,7 @@ from app.keyboard.reply import main_kb
 from app.util.i18n import get_i18n_msg
 from app.state.app import AppState
 from app.util.api import get_products_from_api
+from app.util import add_temp_msg, clear_temp_msgs
 
 router = Router()
 
@@ -37,8 +39,8 @@ async def products_in_cart(message: Message, state: FSMContext):
     all_products = await get_products_from_api(lang)
     cart_product = [p for p in all_products if p["id"] in cart_product]
 
-    for product in cart_product:
-        async with db_helper.session_factory() as session:
+    async with db_helper.session_factory() as session:
+        for product in cart_product:
             liked_unliked = (
                 "❤️\n\n"
                 if await is_liked(session, message.from_user.id, product["id"])
@@ -49,18 +51,20 @@ async def products_in_cart(message: Message, state: FSMContext):
                 session, message.from_user.id, product["id"]
             )
 
-        await message.answer_photo(
-            photo=URLInputFile(
-                url=product["images"][0]["filePath"], filename="product_image.jpg"
-            ),
-            caption=liked_unliked
-            + get_i18n_msg("product_details", lang)
-            .replace("name", product["name"])
-            .replace("price", str(product["price"]))
-            .replace("description", product["shortDescription"])
-            .replace("count", f"{product_count}"),
-            reply_markup=product_kb(product["id"], lang),
-        )
+            msg = await message.answer_photo(
+                photo=URLInputFile(
+                    url=product["images"][0]["filePath"], filename="product_image.jpg"
+                ),
+                caption=liked_unliked
+                + get_i18n_msg("product_details", lang)
+                .replace("name", product["name"])
+                .replace("price", str(product["price"]))
+                .replace("description", product["shortDescription"])
+                .replace("count", f"{product_count}"),
+                reply_markup=product_kb(product["id"], lang),
+            )
+            add_temp_msg(message.from_user.id, msg.message_id)
+
         await message.answer(
             get_i18n_msg("accept_order", lang), reply_markup=order_kb(lang)
         )
@@ -70,6 +74,11 @@ async def products_in_cart(message: Message, state: FSMContext):
     AppState.show_products_in_cart, F.data.startswith("confirm_order")
 )
 async def accept_order_handler(callback: CallbackQuery, state: FSMContext):
+    await clear_temp_msgs(callback.from_user.id)
+
+    await callback.answer("Processing...")
+    await callback.message.delete_reply_markup()
+
     lang = (await state.get_data()).get("lang")
 
     # TODO: Implement order activation logic
@@ -84,6 +93,9 @@ async def accept_order_handler(callback: CallbackQuery, state: FSMContext):
 
 @router.callback_query(F.data.startswith("buy_now"))
 async def accept_order_handler(callback: CallbackQuery, state: FSMContext):
+    await callback.answer("Processing...")
+    await callback.message.delete_reply_markup()
+
     lang = (await state.get_data()).get("lang")
     product_id = int(callback.data.split(":")[1])
 
@@ -98,6 +110,9 @@ async def accept_order_handler(callback: CallbackQuery, state: FSMContext):
     AppState.waiting_confirm_order, F.data.startswith("confirm_one_order")
 )
 async def confirm_one_order_handler(callback: CallbackQuery, state: FSMContext):
+    await callback.answer("Processing...")
+    await callback.message.delete_reply_markup()
+
     lang = (await state.get_data()).get("lang")
     product_id = int(callback.data.split(":")[1])
 
@@ -149,7 +164,7 @@ async def add_product_to_cart_handler(callback: CallbackQuery, state: FSMContext
     lang = (await state.get_data()).get("lang")
 
     async with db_helper.session_factory() as session:
-        await add_product_to_cart_handler(session, callback.from_user.id, product_id)
+        await add_product_to_cart(session, callback.from_user.id, product_id)
         await callback.answer(
             get_i18n_msg("product_added_to_cart", lang), show_alert=True
         )

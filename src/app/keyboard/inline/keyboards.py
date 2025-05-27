@@ -33,7 +33,7 @@ def order_kb(lang: str) -> InlineKeyboardMarkup:
                 InlineKeyboardButton(text=get_i18n_msg("yes", lang), callback_data=f"confirm_order"),
             ],
             [
-                InlineKeyboardButton(text=get_i18n_msg("back_to_menu", lang)),
+                InlineKeyboardButton(text=get_i18n_msg("back_to_menu", lang), callback_data="back_to_menu"),
             ],
         ],
         resize_keyboard=True,

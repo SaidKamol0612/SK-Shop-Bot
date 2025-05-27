@@ -7,6 +7,7 @@ from app.util.i18n import get_i18n_msg
 from app.keyboard.reply import menu_kb, LANG_KB
 from app.db.crud import set_user
 from app.db import db_helper
+from app.util.temp_msg import add_temp_msg, clear_temp_msgs
 
 router = Router()
 
@@ -36,6 +37,9 @@ async def main_menu(message: Message, state: FSMContext):
     F.text.in_(("🏠 Bosh menyuga qaytish.", "🏠 Вернуться в главоному меню."))
 )
 async def back_to_main_menu(message: Message, state: FSMContext):
+    await message.delete()
+    await clear_temp_msgs(message.from_user.id)
+
     lang = (await state.get_data()).get("lang")
 
     await state.set_state(AppState.main)
@@ -48,6 +52,8 @@ async def back_to_main_menu(message: Message, state: FSMContext):
 @router.callback_query(F.data == "back_to_menu")
 async def back_to_main_menu(callback: CallbackQuery, state: FSMContext):
     await callback.answer("Home")
+    await callback.message.delete()
+    await clear_temp_msgs(callback.from_user.id)
 
     lang = (await state.get_data()).get("lang")
 
