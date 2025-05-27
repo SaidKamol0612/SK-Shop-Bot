@@ -109,20 +109,40 @@
         "uz": "dona.",
         "ru": "штук."
     },
-    "no_favorites" : {
+    "no_favorites": {
         "uz": "💔 Sizda sevimli mahsulotlar yo'q.",
         "ru": "💔 У вас нету любимых продуктов."
     },
-    "no_cart_products" : {
+    "no_cart_products": {
         "uz": "🛒 Siznig savatchada mahsulotlar yo'q.",
         "ru": "🛒 В вашем корзине нету продуктов."
     },
-    "no_product_in_cart" : {
+    "no_product_in_cart": {
         "uz": "⚠️ Sizning savatchada bu mahsulotdan boshqa yo'q.",
         "ru": "⚠️ В вашей корзине больше нету этого продукта."
     },
-    "search_by_code" : {
+    "search_by_code": {
         "uz": "🔍 Mahsulot kodini jo'nating.",
         "ru": "🔍 Отправьте код продукта."
+    },
+    "accept_order": {
+        "uz": "📦 Savatchadagi mahsulotlarga buyurtma berishni xohlaysizmi ?",
+        "ru": "📦 Хотите заказать продукты в корзине ?"
+    },
+    "yes": {
+        "uz": "✅ Ha",
+        "ru": "✅ Да"
+    },
+    "order_accepted": {
+        "uz": "✅ Buyurtmangizni qabul qildim.",
+        "ru": "✅ Принял ваш заказ."
+    },
+    "ask_confirm_one_order": {
+        "uz": "❓ Shu mahsulotdan buyurtma berishni xohlaysizmi ?",
+        "ru": "❓ Хотите заказать этого продукта ?"
+    },
+    "confirm_one_order": {
+        "uz": "✅ Ha shu mahsulotga buyurtma berish.",
+        "ru": "✅ Да заказать этот продукт."
     }
 }

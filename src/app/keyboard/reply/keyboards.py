@@ -65,3 +65,4 @@ def main_kb(lang: str) -> ReplyKeyboardMarkup:
         ],
         resize_keyboard=True,
     )
+

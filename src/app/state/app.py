@@ -10,3 +10,4 @@ class AppState(StatesGroup):
     show_favorites = State()
     show_products_in_cart = State()
     search_by_code = State()
+    waiting_confirm_order = State()

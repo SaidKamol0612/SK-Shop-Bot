@@ -24,3 +24,34 @@ def product_kb(product_id: int, lang: str) -> InlineKeyboardMarkup:
     )
 
     return kb.adjust(2).as_markup()
+
+
+def order_kb(lang: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=get_i18n_msg("yes", lang), callback_data=f"confirm_order"),
+            ],
+            [
+                InlineKeyboardButton(text=get_i18n_msg("back_to_menu", lang)),
+            ],
+        ],
+        resize_keyboard=True,
+    )
+
+
+def one_order_kb(lang: str, product_id: int) -> InlineKeyboardMarkup:
+    confirm_text = get_i18n_msg("confirm_one_order", lang)
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=confirm_text, callback_data=f"confirm_one_order:{product_id}"
+                ),
+            ],
+            [
+                InlineKeyboardButton(text=get_i18n_msg("back_to_menu", lang), callback_data="back_to_menu"),
+            ],
+        ],
+        resize_keyboard=True,
+    )

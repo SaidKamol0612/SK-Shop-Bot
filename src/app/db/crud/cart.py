@@ -33,6 +33,11 @@ async def remove_product_from_cart(
 
     if product_cart:
         product_cart.product_count -= 1
+
+        if product_cart.product_count <= 0:
+            await session.delete(product_cart)
+            await session.commit()
+            return
         await session.commit()
         await session.refresh(product_cart)
 
@@ -58,7 +63,6 @@ async def add_product_to_cart(session: AsyncSession, user_tg_id: int, product_id
         await session.refresh(product_cart)
 
 
-
 async def get_count_products_in_cart(
     session: AsyncSession, user_tg_id: int, product_id: int
 ):
@@ -79,3 +83,29 @@ async def get_products_in_cart(session: AsyncSession, user_tg_id: int):
     product_carts = await session.scalars(stmt)
 
     return [product.product_id for product in product_carts]
+
+
+async def activate_order(session: AsyncSession, user_tg_id: int):
+    cart = await get_cart(session, user_tg_id)
+    cart.is_ordered = True
+    await session.commit()
+    await session.refresh(cart)
+
+
+async def activate_one_order(session: AsyncSession, user_tg_id: int, product_id: int):
+    cart = Cart(
+        user_id=(await get_user(session, user_tg_id)).id,
+        is_ordered=True,
+    )
+    session.add(cart)
+    await session.commit()
+    await session.refresh(cart)
+
+    product_cart = ProductCart(
+        cart_id=cart.id,
+        product_id=product_id,
+        product_count=1,
+    )
+    session.add(product_cart)
+    await session.commit()
+    await session.refresh(product_cart)
