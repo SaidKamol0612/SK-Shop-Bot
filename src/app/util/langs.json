@@ -62,8 +62,8 @@
         "ru": "⚠️ У нас нету такого продукта."
     },
     "product_details": {
-        "uz": "📦 Mahsulot nomi: name. \n🏷 Mahsulot haqida: description. \n🏷️ Mahsulot narxi: price. \n\n🛒 Savatchangizda: count dona.",
-        "ru": "📦 Название продукта: name. \n🏷 Описание продукта: description. \n🏷️ Цена продукта: price. \n\n🛒 В вашей корзине: count штук."
+        "uz": "📦 Mahsulot nomi: name. \n🏷️ Mahsulot haqida: description. \n🧮 Mahsulot narxi: price. \n\n🛒 Savatchangizda: count dona.",
+        "ru": "📦 Название продукта: name. \n🏷️ Описание продукта: description. \n🧮 Цена продукта: price. \n\n🛒 В вашей корзине: count штук."
     },
     "back_to_categories": {
         "uz": "🔙 Kategoriyalarga qaytish.",
@@ -116,5 +116,13 @@
     "no_cart_products" : {
         "uz": "🛒 Siznig savatchada mahsulotlar yo'q.",
         "ru": "🛒 В вашем корзине нету продуктов."
+    },
+    "no_product_in_cart" : {
+        "uz": "⚠️ Sizning savatchada bu mahsulotdan boshqa yo'q.",
+        "ru": "⚠️ В вашей корзине больше нету этого продукта."
+    },
+    "search_by_code" : {
+        "uz": "🔍 Mahsulot kodini jo'nating.",
+        "ru": "🔍 Отправьте код продукта."
     }
 }

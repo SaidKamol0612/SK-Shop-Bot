@@ -3,10 +3,8 @@ from aiogram.types import Message, URLInputFile, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from app.db.crud import (
-    get_favorites,
     get_count_products_in_cart,
     is_liked,
-    like_unlike_product,
 )
 from app.db.crud.cart import get_products_in_cart
 from app.db import db_helper

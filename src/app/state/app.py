@@ -9,3 +9,4 @@ class AppState(StatesGroup):
     product_details = State()
     show_favorites = State()
     show_products_in_cart = State()
+    search_by_code = State()

@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import URLInputFile
 
 from app.util.api import get_products_from_api
-from app.keyboard.reply import catalog_kb
+from app.keyboard.reply import catalog_kb, main_kb
 from app.keyboard.inline import product_kb
 from app.util.i18n import get_i18n_msg
 from app.util.crud import get_categories_by_products
@@ -22,7 +22,45 @@ router = Router()
 
 
 @router.message(F.text.in_(("🔍 Kod yordamida qidirish", "🔍 Искать с помощью кода")))
-async def search_by_code(message: Message, state: FSMContext): ...
+async def search_by_code(message: Message, state: FSMContext): 
+    lang = (await state.get_data()).get("lang")
+    await state.set_state(AppState.search_by_code)
+    await message.answer(get_i18n_msg("search_by_code", lang), reply_markup=main_kb(lang))
+    
+@router.message(AppState.search_by_code, F.text)
+async def search_by_code_handler(message: Message, state: FSMContext):
+    lang = (await state.get_data()).get("lang")
+    code = message.text.strip()
+
+    products = await get_products_from_api(lang)
+    product = next((p for p in products if str(p["id"]) == code), None)
+
+    if product:
+        async with db_helper.session_factory() as session:
+            liked_unliked = (
+                "❤️\n\n"
+                if await is_liked(session, message.from_user.id, product["id"])
+                else ""
+            )
+
+            product_count = await get_count_products_in_cart(
+                session, message.from_user.id, product["id"]
+            )
+
+        await message.answer_photo(
+            photo=URLInputFile(
+                url=product["images"][0]["filePath"], filename="product_image.jpg"
+            ),
+            caption=liked_unliked
+            + get_i18n_msg("product_details", lang)
+            .replace("name", product["name"])
+            .replace("price", str(product["price"]))
+            .replace("description", product["shortDescription"])
+            .replace("count", f"{product_count}"),
+            reply_markup=product_kb(product["id"], lang),
+        )
+    else:
+        await message.answer(get_i18n_msg("product_not_found", lang))
 
 
 @router.message(
@@ -100,7 +138,7 @@ async def choose_product(message: Message, state: FSMContext):
         await message.answer(get_i18n_msg("product_not_found", lang))
 
 
-@router.callback_query(AppState.choose_product, F.data.startswith("minus_cart"))
+@router.callback_query(F.data.startswith("minus_cart"))
 async def minus_cart(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
@@ -127,9 +165,11 @@ async def minus_cart(callback: CallbackQuery, state: FSMContext):
             ),
             reply_markup=product_kb(product["id"], lang),
         )
+    else:
+        await callback.answer(get_i18n_msg("no_product_in_cart", lang), show_alert=True)
 
 
-@router.callback_query(AppState.choose_product, F.data.startswith("add_to_cart"))
+@router.callback_query(F.data.startswith("add_to_cart"))
 async def add_to_cart(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 

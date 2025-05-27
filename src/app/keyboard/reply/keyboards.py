@@ -37,17 +37,31 @@ def menu_kb(lang: str) -> ReplyKeyboardMarkup:
 
     return kb.adjust(2).as_markup(resize_keyboard=True)
 
-def catalog_kb(list_e: list[str], is_ctg: bool | None = False, lang: str = "uz") -> ReplyKeyboardMarkup:
+
+def catalog_kb(
+    list_e: list[str], is_ctg: bool | None = False, lang: str = "uz"
+) -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
 
     for e in list_e:
         if is_ctg:
-            kb.add(KeyboardButton(text=e['name']))
+            kb.add(KeyboardButton(text=e["name"]))
         else:
             kb.add(KeyboardButton(text=f"{e['name']} {e['id']}"))
     if not is_ctg:
         kb.add(KeyboardButton(text=get_i18n_msg("back_to_categories", lang)))
-            
+
     kb.add(KeyboardButton(text=get_i18n_msg("back_to_menu", lang)))
 
     return kb.adjust(2).as_markup(resize_keyboard=True)
+
+
+def main_kb(lang: str) -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=get_i18n_msg("back_to_menu", lang)),
+            ],
+        ],
+        resize_keyboard=True,
+    )

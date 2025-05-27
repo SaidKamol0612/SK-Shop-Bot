@@ -2,8 +2,8 @@ from aiogram import Router, F
 from aiogram.types import Message, URLInputFile, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from app.db.crud import get_favorites, get_count_products_in_cart
-from app.db.crud import is_liked, like_unlike_product
+from app.db.crud import get_favorites, get_count_products_in_cart, is_liked, like_unlike_product
+from app.db import db_helper
 from app.keyboard.inline import product_kb
 from app.util.i18n import get_i18n_msg
 from app.state.app import AppState
@@ -16,7 +16,8 @@ router = Router()
 async def favorites(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
-    favorites = await get_favorites(message.from_user.id)
+    async with db_helper.session_factory() as session:
+        favorites = await get_favorites(session, message.from_user.id)
 
     if not favorites:
         await message.answer(get_i18n_msg("no_favorites", lang))
@@ -27,13 +28,14 @@ async def favorites(message: Message, state: FSMContext):
     favorites = [p for p in all_products if p["id"] in favorites]
 
     for product in favorites:
-        liked_unliked = (
-            "❤️\n\n" if await is_liked(message.from_user.id, product["id"]) else ""
-        )
+        async with db_helper.session_factory() as session:
+            liked_unliked = (
+                "❤️\n\n" if await is_liked(session, message.from_user.id, product["id"]) else ""
+            )
 
-        product_count = await get_count_products_in_cart(
-            message.from_user.id, product["id"]
-        )
+            product_count = await get_count_products_in_cart(
+                session, message.from_user.id, product["id"]
+            )
 
         await message.answer_photo(
             photo=URLInputFile(
@@ -56,7 +58,8 @@ async def like_unlike(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
     product_id = int(callback.data.split(":")[1])
 
-    res = await like_unlike_product(callback.from_user.id, product_id)
+    async with db_helper.session_factory() as session:
+        res = await like_unlike_product(session, callback.from_user.id, product_id)
     
     if res:
         await callback.answer(get_i18n_msg("liked_unliked", lang)[0], show_alert=True)
@@ -64,8 +67,8 @@ async def like_unlike(callback: CallbackQuery, state: FSMContext):
         await callback.answer(get_i18n_msg("liked_unliked", lang)[1], show_alert=True)
     await callback.message.delete()
 
-
-    favorites = await get_favorites(callback.from_user.id)
+    async with db_helper.session_factory() as session:
+        favorites = await get_favorites(session, callback.from_user.id)
 
     if not favorites:
         await callback.message.answer(get_i18n_msg("no_favorites", lang))
