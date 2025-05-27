@@ -1,11 +1,23 @@
 {
+    "info_reg": {
+        "uz": "Iltimos botimizdan foydanilishdan oldin ro'yxat o'ting. Bu uncha ko'p vaqt olmaydi.",
+        "ru": "Пожалуйста перед использованием нашего пройдите регистрацию. Это не займёт много времени."
+    },
+    "request_name": {
+        "uz": "1. Botga ismingizni yozib yuboring.",
+        "ru": "1. Отправьте в бота ваше имя."
+    },
     "request_phone": {
-        "uz": "Iltimos botimizdan foydanilishdan oldin botga telefon raqmingizni jo'nating.",
-        "ru": "Пожалуйста перед использованием нашего бота отправьте ваш номер телефона."
+        "uz": "2. Botga telefon raqmingizni yozib yuboring.",
+        "ru": "2. Отправьте в бота ваш номер телефона."
     },
     "send_number": {
         "uz": "☎️ Telefon raqamini jo'natish",
         "ru": "☎️ Отправить номер телефона"
+    },
+    "accept_name": {
+        "uz": "✅ Ismingizni qabul qildim.",
+        "ru": "✅ Принял ваше имя."
     },
     "accept_phone": {
         "uz": "✅ Telefon raqamingizni qabul qildim.",

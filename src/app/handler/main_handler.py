@@ -15,12 +15,12 @@ router = Router()
 @router.message(AppState.waiting_for_phone_number, F.contact)
 async def main_menu(message: Message, state: FSMContext):
     user_phone_num = message.contact.phone_number
-
+    name = (await state.get_data()).get("name")
     async with db_helper.session_factory() as session:
         await set_user(
             session,
             tg_id=message.from_user.id,
-            name=message.from_user.first_name,
+            name=name,
             phone_num=user_phone_num,
         )
 

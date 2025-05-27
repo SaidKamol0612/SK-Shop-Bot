@@ -29,14 +29,27 @@ async def uzbek_language_handler(message: Message, state: FSMContext):
     async with db_helper.session_factory() as session:
         is_user = await is_registered_user(session, message.from_user.id)
 
+    lang = (await state.get_data()).get("lang")
     if is_user:
-        lang = (await state.get_data()).get("lang")
-        w = get_i18n_msg("welcome_menu", lang)
         await state.set_state(AppState.main)
-        await message.answer(w, reply_markup=menu_kb(lang))
-    else:
-        lang = (await state.get_data()).get("lang")
-        await state.set_state(AppState.waiting_for_phone_number)
         await message.answer(
-            get_i18n_msg("request_phone", lang), reply_markup=send_phone_kb(lang)
+            get_i18n_msg("welcome_menu", lang), reply_markup=menu_kb(lang)
         )
+    else:
+        await message.answer(get_i18n_msg("info_reg", lang))
+        await state.set_state(AppState.waiting_for_name)
+        await message.answer(get_i18n_msg("request_name", lang), reply_markup=None)
+
+
+@router.message(AppState.waiting_for_name, F.text)
+async def get_name(message: Message, state: FSMContext):
+    lang = (await state.get_data()).get("lang")
+    
+    await state.update_data(name=message.text)
+    await state.set_state(AppState.waiting_for_phone_number)
+    
+    acc = get_i18n_msg("accept_name", lang)
+    await message.answer(
+        f"{acc}\n" + get_i18n_msg("request_phone", lang),
+        reply_markup=send_phone_kb(lang),
+    )
