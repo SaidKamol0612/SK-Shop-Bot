@@ -12,6 +12,8 @@ __all__ = (
     "get_products_in_cart",
     "activate_order",
     "activate_one_order",
+    "get_user_orders",
+    "get_products_in_order",
 )
 
 from .user import is_registered_user, set_user, get_user
@@ -23,5 +25,7 @@ from .cart import (
     remove_product_from_cart,
     activate_order,
     activate_one_order,
+    get_user_orders,
+    get_products_in_order,
 )
 from .favorite import like_unlike_product, is_liked, get_favorites

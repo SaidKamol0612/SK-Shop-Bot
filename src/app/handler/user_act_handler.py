@@ -19,9 +19,3 @@ async def my_info(message: Message, state: FSMContext):
     await message.answer(
         (f"<b>{info[0]}</b>: {current.name}\n" f"<b>{info[1]}</b>: {current.phone_num}")
     )
-
-
-@router.message(
-    F.text.in_(("📦 Mening buyurtmalarim", "📦 Мои заказы", "📦 My orders"))
-)
-async def my_orders(message: Message, state: FSMContext): ...

@@ -14,11 +14,12 @@ from app.db.crud import (
     activate_one_order,
 )
 from app.db import db_helper
+from app.db.crud import get_user
 from app.keyboard.inline import product_kb, order_kb, one_order_kb
 from app.keyboard.reply import main_kb
 from app.util.i18n import get_i18n_msg
 from app.state.app import AppState
-from app.util.api import get_products_from_api
+from app.util.api import get_products_from_api, send_order_to_api
 from app.util import add_temp_msg, clear_temp_msgs
 
 router = Router()
@@ -81,10 +82,24 @@ async def accept_order_handler(callback: CallbackQuery, state: FSMContext):
 
     lang = (await state.get_data()).get("lang")
 
-    # TODO: Implement order activation logic
-
     async with db_helper.session_factory() as session:
+        products = await get_products_in_cart(session, callback.from_user.id)
+        all_products = await get_products_from_api(lang)
+        products = [
+            {
+                "id": product["id"],
+                "count": await get_count_products_in_cart(
+                    session, callback.from_user.id, product["id"]
+                ),
+            }
+            for product in all_products
+            if product["id"] in products
+        ]
+
         await activate_order(session, callback.from_user.id)
+
+        user = await get_user(session, callback.from_user.id)
+        await send_order_to_api(user.name, user.phone_number, products)
 
     await callback.message.answer(
         get_i18n_msg("order_accepted", lang), reply_markup=main_kb(lang)
@@ -117,7 +132,17 @@ async def confirm_one_order_handler(callback: CallbackQuery, state: FSMContext):
     product_id = int(callback.data.split(":")[1])
 
     async with db_helper.session_factory() as session:
+        products = [
+            {
+                "id": product_id,
+                "count": 1,
+            }
+        ]
+
         await activate_one_order(session, callback.from_user.id, product_id)
+
+        user = await get_user(session, callback.from_user.id)
+        await send_order_to_api(user.name, user.phone_num, products)
 
     await callback.message.answer(
         get_i18n_msg("order_accepted", lang), reply_markup=main_kb(lang)

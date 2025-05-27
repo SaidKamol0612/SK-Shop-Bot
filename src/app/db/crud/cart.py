@@ -109,3 +109,19 @@ async def activate_one_order(session: AsyncSession, user_tg_id: int, product_id:
     session.add(product_cart)
     await session.commit()
     await session.refresh(product_cart)
+
+async def get_user_orders(session: AsyncSession, user_tg_id: int):
+    user_id = (await get_user(session, user_tg_id)).id
+
+    stmt = select(Cart).where(Cart.user_id == user_id, Cart.is_ordered == True)
+    orders = await session.scalars(stmt)
+
+    return [order for order in orders]
+
+async def get_products_in_order(session: AsyncSession, order_id: int):
+    stmt = select(ProductCart).where(
+        ProductCart.cart_id == order_id
+    )
+    product_carts = await session.scalars(stmt)
+
+    return [product.product_id for product in product_carts]

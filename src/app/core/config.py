@@ -40,6 +40,7 @@ class ApiSettings(BaseModel):
 
     products_endpoint: str
     login_endpoint: str
+    send_order_endpoint: str
 
     timeout: int = 30  # seconds
 

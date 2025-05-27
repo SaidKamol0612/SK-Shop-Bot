@@ -138,11 +138,23 @@
         "ru": "✅ Принял ваш заказ."
     },
     "ask_confirm_one_order": {
-        "uz": "❓ Shu mahsulotdan buyurtma berishni xohlaysizmi ?",
-        "ru": "❓ Хотите заказать этого продукта ?"
+        "uz": "❓ Shu mahsulotdan bitta buyurtma bermoqchimisiz ?",
+        "ru": "❓ Хотите заказать одну штуку этого товара ?"
     },
     "confirm_one_order": {
         "uz": "✅ Ha shu mahsulotga buyurtma berish.",
         "ru": "✅ Да заказать этот продукт."
+    },
+    "no_orders": {
+        "uz": "⚠️ Sizning buyurtmalaringiz yo'q.",
+        "ru": "⚠️ У вас нету заказов."
+    },
+    "your_orders": {
+        "uz": "📦 Sizning buyurtmalaringiz.",
+        "ru": "📦 Ваши заказы."
+    },
+    "date": {
+        "uz": "🗓️ Sana.",
+        "ru": "🗓️ Дата."
     }
 }
