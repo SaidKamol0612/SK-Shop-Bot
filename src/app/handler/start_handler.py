@@ -12,6 +12,9 @@ router = Router()
 
 
 @router.message(AppState.choose_lang, F.text)
+@router.message(
+    F.text.in_(("🇺🇿 O'zbekcha", "🇷🇺 Русский"))
+)
 async def uzbek_language_handler(message: Message, state: FSMContext):
     msg = message.text
     if msg == ("🇺🇿 O'zbekcha"):
