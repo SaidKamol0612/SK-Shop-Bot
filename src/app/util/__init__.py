@@ -8,7 +8,7 @@ __all__ = (
     "send_order_to_group",
 )
 
-from .api import get_products_from_api, send_order_to_api
+from .api import get_products_from_api
 from .i18n import get_i18n_msg
 from .case_converter import camel_case_to_snake_case
 from .crud import get_categories_by_products
