@@ -14,7 +14,7 @@ async def login() -> str:
         return token_data["token"]
 
 
-async def get_products_from_api(lang: int) -> dict:
+async def get_products_from_api(lang: int = 1) -> dict:
     langs = {"uz": 1, "ru": 2}
     url = settings.api.products_endpoint
 
