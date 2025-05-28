@@ -40,13 +40,14 @@ class ApiSettings(BaseModel):
 
     products_endpoint: str
     login_endpoint: str
-    send_order_endpoint: str
 
     timeout: int = 30  # seconds
 
     def get_full_url(self, endpoint: str) -> str:
         return f"{self.base_url}/{endpoint.lstrip('/')}"
 
+class GroupSettings(BaseModel):
+    chat_id: str
 
 class DataBaseSettings(BaseModel):
     url: str
@@ -75,6 +76,7 @@ class Settings(BaseSettings):
     bot: BotSettings
     logging: LoggingConfig = LoggingConfig()
     api: ApiSettings
+    group: GroupSettings
     db: DataBaseSettings
 
 

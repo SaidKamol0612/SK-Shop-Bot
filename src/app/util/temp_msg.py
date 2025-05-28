@@ -1,12 +1,12 @@
 import logging
 
-from aiogram import Bot
 
 from app.core.config import settings
+from app.core.load import get_bot
 
 user_msgs = {int: [int]}
 
-BOT = Bot(settings.bot.token)
+BOT = get_bot()
 
 
 def add_temp_msg(user_id: int, msg_id: int) -> None:

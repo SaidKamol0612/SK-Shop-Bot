@@ -37,7 +37,7 @@ async def search_by_code_handler(message: Message, state: FSMContext):
     code = message.text.strip()
 
     products = await get_products_from_api(lang)
-    product = next((p for p in products if str(p["id"]) == code), None)
+    product = next((p for p in products if str(p["sku"]) == code), None)
 
     if product:
         async with db_helper.session_factory() as session:
