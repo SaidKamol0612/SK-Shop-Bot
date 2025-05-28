@@ -16,7 +16,6 @@ class UserExistsMiddleware(BaseMiddleware):
         data: dict,
     ) -> Awaitable:
         user_id = event.from_user.id
-        print(user_id)
         user_exists = await self.user_exists_in_db(user_id)
 
         is_start_command = (
