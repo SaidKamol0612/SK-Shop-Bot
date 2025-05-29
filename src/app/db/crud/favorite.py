@@ -1,7 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db import db_helper
 from .user import get_user
 from app.db.models import Favorite
 

@@ -73,7 +73,6 @@ async def search_by_code_handler(message: Message, state: FSMContext):
 )
 async def catalog(message: Message, state: FSMContext):
     await clear_temp_msgs(message.from_user.id)
-    await message.delete()
     
     lang = (await state.get_data()).get("lang")
 

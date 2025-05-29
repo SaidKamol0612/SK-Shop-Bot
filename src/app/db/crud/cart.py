@@ -1,8 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.models import User, Cart, ProductCart, Favorite
-from app.db import db_helper
+from app.db.models import Cart, ProductCart
 from .user import get_user
 
 
