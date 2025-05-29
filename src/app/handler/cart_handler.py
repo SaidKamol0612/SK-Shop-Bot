@@ -19,7 +19,7 @@ from app.keyboard.inline import product_kb, order_kb, one_order_kb
 from app.keyboard.reply import main_kb
 from app.util.i18n import get_i18n_msg
 from app.state.app import AppState
-from app.util import get_products_from_api, send_order_to_group
+from app.util import get_data, send_order_to_group
 from app.util import add_temp_msg, clear_temp_msgs
 
 router = Router()
@@ -37,7 +37,7 @@ async def products_in_cart(message: Message, state: FSMContext):
         return
     await state.set_state(AppState.show_products_in_cart)
 
-    all_products = await get_products_from_api(lang)
+    all_products = await get_data(lang, data_type="products")
     cart_product = [p for p in all_products if p["id"] in cart_product]
 
     async with db_helper.session_factory() as session:
@@ -84,7 +84,7 @@ async def accept_order_handler(callback: CallbackQuery, state: FSMContext):
 
     async with db_helper.session_factory() as session:
         products = await get_products_in_cart(session, callback.from_user.id)
-        all_products = await get_products_from_api(lang)
+        all_products = await get_data(lang, data_type="products")
         products = [
             {
                 "id": product["id"],
@@ -134,7 +134,7 @@ async def confirm_one_order_handler(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
     product_id = int(callback.data.split(":")[1])
 
-    all_p = await get_products_from_api(lang)
+    all_p = await get_data(lang, data_type="products")
     product = next((p for p in all_p if p["id"] == product_id), None)
 
     async with db_helper.session_factory() as session:

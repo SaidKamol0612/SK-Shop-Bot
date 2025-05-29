@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 
 from app.state.app import AppState
 from app.util.i18n import get_i18n_msg
-from app.keyboard.reply import menu_kb, LANG_KB
+from app.keyboard.reply import menu_kb
 from app.db.crud import set_user
 from app.db import db_helper
 from app.util.temp_msg import add_temp_msg, clear_temp_msgs

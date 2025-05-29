@@ -14,13 +14,13 @@ async def login() -> str:
         return token_data["token"]
 
 
-async def get_products_from_api(lang: int = 1) -> dict:
+async def get_products_from_api(lang: str | None = 'uz') -> dict:
     langs = {"uz": 1, "ru": 2}
     url = settings.api.products_endpoint
 
     bearer_token = await login()
     headers = {"Authorization": f"Bearer {bearer_token}"}
-    params = {"languageId": langs.get(lang)}
+    params = {"languageId": langs.get(lang, 1)}
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url, headers=headers, params=params)

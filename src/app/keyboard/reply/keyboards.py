@@ -45,7 +45,7 @@ def catalog_kb(
 
     for e in list_e:
         if is_ctg:
-            kb.add(KeyboardButton(text=e["name"]))
+            kb.add(KeyboardButton(text=e))
         else:
             kb.add(KeyboardButton(text=f"{e['name']} {e['id']}"))
     if not is_ctg:

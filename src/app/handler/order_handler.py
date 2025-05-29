@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from app.db.crud import get_user_orders, get_products_in_order
 from app.db import db_helper
 from app.util.i18n import get_i18n_msg
-from app.util.api import get_products_from_api
+from app.util import get_data
 from app.keyboard.reply import main_kb
 
 router = Router()
@@ -26,7 +26,7 @@ async def my_orders(message: Message, state: FSMContext):
     async with db_helper.session_factory() as session:
         for order in orders:
             products_id = await get_products_in_order(session, order.id)
-            products = [p for p in (await get_products_from_api(lang)) if p["id"] in products_id]
+            products = [p for p in (await get_data(lang, data_type='products')) if p["id"] in products_id]
             for product in products:
                 response += f"\n{product['name']} - {product['price']}\n"
                 response += get_i18n_msg("date", lang)

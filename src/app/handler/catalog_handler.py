@@ -3,11 +3,10 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.types import URLInputFile
 
-from app.util.api import get_products_from_api
+from app.util import get_data
 from app.keyboard.reply import catalog_kb, main_kb
 from app.keyboard.inline import product_kb
 from app.util.i18n import get_i18n_msg
-from app.util.crud import get_categories_by_products
 from app.state.app import AppState
 from app.db.crud import (
     remove_product_from_cart,
@@ -36,7 +35,7 @@ async def search_by_code_handler(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
     code = message.text.strip()
 
-    products = await get_products_from_api(lang)
+    products = await get_data(lang, data_type='products')
     product = next((p for p in products if str(p["sku"]) == code), None)
 
     if product:
@@ -78,8 +77,7 @@ async def catalog(message: Message, state: FSMContext):
     
     lang = (await state.get_data()).get("lang")
 
-    products = await get_products_from_api(lang)
-    categories = get_categories_by_products(products)
+    categories = await get_data(lang)
 
     await state.set_state(AppState.choose_category)
     await message.answer(
@@ -92,8 +90,8 @@ async def catalog(message: Message, state: FSMContext):
 async def choose_category(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
-    products = await get_products_from_api(lang)
-    categories = (c["name"] for c in get_categories_by_products(products))
+    products = await get_data(lang, data_type='products')
+    categories = await get_data(lang)
 
     category_name = message.text.strip()
 
@@ -113,7 +111,7 @@ async def choose_category(message: Message, state: FSMContext):
 async def choose_product(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
-    products = await get_products_from_api(lang)
+    products = await get_data(lang, data_type="products")
     product = next(
         (p for p in products if f"{p['name']} {p['id']}" == message.text.strip()), None
     )
@@ -165,7 +163,7 @@ async def minus_cart(callback: CallbackQuery, state: FSMContext):
         await remove_product_from_cart(session, user_tg_id, product_id)
         product_count -= 1
 
-        products = await get_products_from_api(lang)
+        products = await get_data(lang, data_type='products')
         product = next((p for p in products if p["id"] == product_id), None)
 
         pcs = get_i18n_msg("pcs", lang)
@@ -196,7 +194,7 @@ async def add_to_cart(callback: CallbackQuery, state: FSMContext):
             session, callback.from_user.id, product_id
         )
 
-    products = await get_products_from_api(lang)
+    products = await get_data(lang, 'products')
     product = next((p for p in products if p["id"] == product_id), None)
 
     await callback.answer(get_i18n_msg("product_added_to_cart", lang), show_alert=True)
