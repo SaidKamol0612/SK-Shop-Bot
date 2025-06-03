@@ -1,21 +1,20 @@
-from aiogram import Bot, Dispatcher, F
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
+from aiogram import Dispatcher, F
+from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.context import FSMContext
 
 from .db import db_helper
-from .db.crud import get_user
+from .db.crud import get_users
 
 from .core.load import get_bot
-from .middleware import UserExistsMiddleware
 from .keyboard.reply import LANG_KB
 from .handler import main_router
 from .state import AppState
+from .core.config import settings
 
 dp = Dispatcher(storage=MemoryStorage())
+
 
 async def start_bot() -> None:
     """Start the bot and set up the dispatcher."""
@@ -63,3 +62,19 @@ async def cmd_start(message: Message):
     )
 
     await message.answer(start_msg)
+
+
+@dp.message(Command("users"), F.chat.type.is_not("private"))
+async def cmd_users(message: Message):
+    msg = "👥Foydalanuvchilar:\n\n"
+    async with db_helper.session_factory() as session:
+        users = await get_users(session)
+
+    i = 0
+    for user in users:
+        i += 1
+        msg += f"👤Foydalanuvchi {i}: {user.name} | {user.phone_num}\n"
+
+    msg += f"\nJami foydalanuvhcilar soni: {i}"
+
+    await message.answer(msg)

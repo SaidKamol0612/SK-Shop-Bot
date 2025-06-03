@@ -35,7 +35,7 @@ async def search_by_code_handler(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
     code = message.text.strip()
 
-    products = await get_data(lang, data_type='products')
+    products = await get_data(lang, data_type="products")
     product = next((p for p in products if str(p["sku"]) == code), None)
 
     if product:
@@ -73,7 +73,7 @@ async def search_by_code_handler(message: Message, state: FSMContext):
 )
 async def catalog(message: Message, state: FSMContext):
     await clear_temp_msgs(message.from_user.id)
-    
+
     lang = (await state.get_data()).get("lang")
 
     categories = await get_data(lang)
@@ -89,7 +89,7 @@ async def catalog(message: Message, state: FSMContext):
 async def choose_category(message: Message, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 
-    products = await get_data(lang, data_type='products')
+    products = await get_data(lang, data_type="products")
     categories = await get_data(lang)
 
     category_name = message.text.strip()
@@ -162,7 +162,7 @@ async def minus_cart(callback: CallbackQuery, state: FSMContext):
         await remove_product_from_cart(session, user_tg_id, product_id)
         product_count -= 1
 
-        products = await get_data(lang, data_type='products')
+        products = await get_data(lang, data_type="products")
         product = next((p for p in products if p["id"] == product_id), None)
 
         pcs = get_i18n_msg("pcs", lang)
@@ -193,7 +193,7 @@ async def add_to_cart(callback: CallbackQuery, state: FSMContext):
             session, callback.from_user.id, product_id
         )
 
-    products = await get_data(lang, 'products')
+    products = await get_data(lang, "products")
     product = next((p for p in products if p["id"] == product_id), None)
 
     await callback.answer(get_i18n_msg("product_added_to_cart", lang), show_alert=True)
@@ -208,6 +208,7 @@ async def add_to_cart(callback: CallbackQuery, state: FSMContext):
 
 @router.callback_query(AppState.choose_product, F.data.startswith("like_unlike"))
 @router.callback_query(AppState.search_by_code, F.data.startswith("like_unlike"))
+@router.callback_query(AppState.show_products_in_cart, F.data.startswith("like_unlike"))
 async def like_unlike(callback: CallbackQuery, state: FSMContext):
     lang = (await state.get_data()).get("lang")
 

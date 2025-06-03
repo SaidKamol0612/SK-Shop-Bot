@@ -48,6 +48,7 @@ class ApiSettings(BaseModel):
 
 class GroupSettings(BaseModel):
     chat_id: str
+    links : str
 
 class DataBaseSettings(BaseModel):
     url: str

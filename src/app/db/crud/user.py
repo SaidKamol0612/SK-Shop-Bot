@@ -26,3 +26,9 @@ async def get_user(session: AsyncSession, tg_id: BigInteger) -> User:
     res = await session.scalar(stmt)
 
     return res
+
+async def get_users(session: AsyncSession):
+    stmt = select(User)
+    res = await session.scalars(stmt)
+    
+    return [u for u in res]

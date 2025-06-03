@@ -16,7 +16,7 @@ __all__ = (
     "get_products_in_order",
 )
 
-from .user import is_registered_user, set_user, get_user
+from .user import is_registered_user, set_user, get_user, get_users
 from .cart import (
     get_cart,
     add_product_to_cart,
