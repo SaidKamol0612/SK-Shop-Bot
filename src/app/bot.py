@@ -64,7 +64,7 @@ async def cmd_start(message: Message):
     await message.answer(start_msg)
 
 
-@dp.message(Command("users"), F.chat.type.is_not("private"))
+@dp.message(Command("users"), F.chat.type.in_(("group", "supergroup")))
 async def cmd_users(message: Message):
     msg = "👥Foydalanuvchilar:\n\n"
     async with db_helper.session_factory() as session:
