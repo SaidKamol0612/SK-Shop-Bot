@@ -17,5 +17,9 @@ async def my_info(message: Message, state: FSMContext):
 
     info = get_i18n_msg("user_info", lang)
     await message.answer(
-        (f"<b>{info[0]}</b>: {current.name}\n" f"<b>{info[1]}</b>: {current.phone_num}")
+        (
+            f"<b>{info[0]}</b>: {current.name}\n"
+            f"<b>{info[1]}</b>: {current.phone_num}\n"
+            f"<b>{info[2]}</b>: {current.username}\n"
+        )
     )

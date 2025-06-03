@@ -11,7 +11,6 @@ from .core.load import get_bot
 from .keyboard.reply import LANG_KB
 from .handler import main_router
 from .state import AppState
-from .core.config import settings
 
 dp = Dispatcher(storage=MemoryStorage())
 
@@ -73,7 +72,7 @@ async def cmd_users(message: Message):
     i = 0
     for user in users:
         i += 1
-        msg += f"👤Foydalanuvchi {i}: {user.name} | {user.phone_num}\n"
+        msg += f"👤Foydalanuvchi {i}: {user.name} | {user.phone_num} | {user.username}\n"
 
     msg += f"\nJami foydalanuvhcilar soni: {i}"
 

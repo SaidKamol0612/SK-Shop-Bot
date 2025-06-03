@@ -12,9 +12,18 @@ async def is_registered_user(session: AsyncSession, user_id: str) -> bool:
 
 
 async def set_user(
-    session: AsyncSession, tg_id: BigInteger, name: str, phone_num: str
+    session: AsyncSession,
+    tg_id: BigInteger,
+    name: str,
+    phone_num: str,
+    username: str | None = None,
 ) -> None:
-    new_user = User(tg_id=tg_id, name=name, phone_num=phone_num)
+    new_user = User(
+        tg_id=tg_id,
+        name=name,
+        phone_num=phone_num,
+        username=("@" + username) if username else None,
+    )
 
     session.add(new_user)
     await session.commit()
@@ -27,8 +36,9 @@ async def get_user(session: AsyncSession, tg_id: BigInteger) -> User:
 
     return res
 
+
 async def get_users(session: AsyncSession):
     stmt = select(User)
     res = await session.scalars(stmt)
-    
+
     return [u for u in res]

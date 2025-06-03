@@ -14,7 +14,9 @@ router = Router()
 
 @router.message(AppState.waiting_for_phone_number, F.contact)
 async def main_menu(message: Message, state: FSMContext):
-    user_phone_num = message.contact.phone_number
+    user_phone_num = (
+            message.contact.phone_number if message.contact.phone_number.startswith("+") else ("+" + message.contact.phone_number)
+        )
     name = (await state.get_data()).get("name")
     async with db_helper.session_factory() as session:
         await set_user(
@@ -22,6 +24,7 @@ async def main_menu(message: Message, state: FSMContext):
             tg_id=message.from_user.id,
             name=name,
             phone_num=user_phone_num,
+            username=message.from_user.username
         )
 
     lang = (await state.get_data()).get("lang")
