@@ -28,16 +28,18 @@ def is_stale_json(file_path: Path = CACHE_PATH, max_hours: int = 24) -> bool:
 
 async def get_data(lang: str = None, data_type: str = "categories") -> dict:
     if is_stale_json():
-        data = await get_products_from_api(lang)
+        data_uz = await get_products_from_api("uz")
+        data_ru = await get_products_from_api("ru")
         updated_at = datetime.now().isoformat()
 
-        categories = [product["category"] for product in data]
+        categories_uz = [product["category"] for product in data_uz]
+        categories_ru = [product["category"] for product in data_ru]
 
         new_data = {
             "updated_at": updated_at,
             "data": {
-                "categories": list(set(categories)),
-                "products": data
+                "uz": {"categories": list(set(categories_uz)), "products": data_uz},
+                "ru": {"categories": list(set(categories_ru)), "products": data_ru},
             },
         }
 
@@ -46,4 +48,4 @@ async def get_data(lang: str = None, data_type: str = "categories") -> dict:
     else:
         with open(CACHE_PATH, "r") as f:
             new_data = json.load(f)
-    return new_data.get("data").get(data_type)
+    return new_data.get("data").get(lang).get(data_type)
